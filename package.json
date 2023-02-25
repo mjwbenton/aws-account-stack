@@ -2,7 +2,7 @@
   "name": "@mattb.tech/aws-account-stack",
   "version": "1.0.0",
   "description": "CDK stack to deploy things that I want in every AWS account",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "git@github.com:mjwbenton/aws-account-stack.git",
   "author": "Matthew Benton <m@mattb.tech>",
   "license": "MIT",
@@ -20,6 +20,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "prettier --check src/"
+    "lint": "prettier --check src/",
+    "bootstrap": "cdk deploy --profile cdk-deploy --all --require-approval never"
   }
 }
