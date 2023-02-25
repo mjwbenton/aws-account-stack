@@ -21,6 +21,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "prettier --check src/",
-    "bootstrap": "cdk deploy --profile cdk-deploy --all --require-approval never"
+    "bootstrap": "cdk deploy --profile cdk-deploy --all --require-approval never",
+    "deploy": "cdk deploy --all --reqiure-approval never"
   }
 }
