@@ -13,7 +13,7 @@ const GITHUB_USERNAME = "mjwbenton";
 
 const ROLE_NAME = "github-actions-cdk";
 
-export class AwsAccountStack extends Stack {
+export class AwsAccountGithubStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     const githubProvider = new OpenIdConnectProvider(

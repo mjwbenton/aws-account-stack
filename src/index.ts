@@ -1,6 +1,6 @@
 import { App } from "aws-cdk-lib";
-import { AwsAccountStack } from "./AwsAccountStack";
+import { AwsAccountGithubStack } from "./AwsAccountGithubStack";
 
 const app = new App();
 
-new AwsAccountStack(app, "AwsAccountStack");
+new AwsAccountGithubStack(app, "AwsAccountGithub");
