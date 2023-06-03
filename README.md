@@ -1,2 +1,3 @@
 # aws-account-stack
-🪴 CDK stack to deploy things that I want in every AWS account
+
+🪴 CDK stack to deploy global setup to my AWS account
