@@ -7,7 +7,7 @@ export class AwsAccountTerraformStack extends Stack {
     super(scope, id, props);
 
     new Bucket(this, "TerraformStateBucket", {
-      bucketName: "terraform-state",
+      bucketName: "mattb.tech-terraform-state",
       versioned: true,
     });
   }
