@@ -1,6 +1,7 @@
 import { Duration, Stack, StackProps } from "aws-cdk-lib";
 import {
   Effect,
+  ManagedPolicy,
   OpenIdConnectPrincipal,
   OpenIdConnectProvider,
   PolicyDocument,
@@ -11,7 +12,8 @@ import { Construct } from "constructs";
 
 const GITHUB_USERNAME = "mjwbenton";
 
-const ROLE_NAME = "github-actions-cdk";
+const CDK_ROLE_NAME = "github-actions-cdk";
+const ADMIN_ROLE_NAME = "github-actions-admin";
 
 export class AwsAccountGithubStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -34,7 +36,7 @@ export class AwsAccountGithubStack extends Stack {
     });
 
     new Role(this, "GitHubActionsRole", {
-      roleName: ROLE_NAME,
+      roleName: CDK_ROLE_NAME,
       assumedBy: githubPrincipal,
       maxSessionDuration: Duration.hours(1),
       inlinePolicies: {
@@ -49,6 +51,15 @@ export class AwsAccountGithubStack extends Stack {
           ],
         }),
       },
+    });
+
+    new Role(this, "GitHubActionsAdminRole", {
+      roleName: ADMIN_ROLE_NAME,
+      assumedBy: githubPrincipal,
+      maxSessionDuration: Duration.hours(1),
+      managedPolicies: [
+        ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
+      ],
     });
   }
 }
