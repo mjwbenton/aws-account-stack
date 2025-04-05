@@ -15,8 +15,12 @@ const GITHUB_USERNAME = "mjwbenton";
 const CDK_ROLE_NAME = "github-actions-cdk";
 const ADMIN_ROLE_NAME = "github-actions-admin";
 
+type AwsAccountGithubStackProps = StackProps & {
+  accountIds: string[];
+};
+
 export class AwsAccountGithubStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: AwsAccountGithubStackProps) {
     super(scope, id, props);
     const githubProvider = new OpenIdConnectProvider(
       this,
@@ -46,7 +50,9 @@ export class AwsAccountGithubStack extends Stack {
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: ["sts:AssumeRole"],
-              resources: [`arn:aws:iam::${this.account}:role/cdk-*`],
+              resources: props.accountIds.map(
+                (accountId) => `arn:aws:iam::${accountId}:role/cdk-*`
+              ),
             }),
           ],
         }),
