@@ -16,6 +16,8 @@ const CDK_ROLE_NAME = "github-actions-cdk";
 const ADMIN_ROLE_NAME = "github-actions-admin";
 
 type AwsAccountGithubStackProps = StackProps & {
+  // Account IDs to enable access to, by enabling AssumeRole access to
+  // relevant roles in those accounts.
   accountIds: string[];
 };
 
@@ -66,6 +68,20 @@ export class AwsAccountGithubStack extends Stack {
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
       ],
+      inlinePolicies: {
+        AssumeRolesPolicy: new PolicyDocument({
+          assignSids: true,
+          statements: [
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: ["sts:AssumeRole"],
+              resources: props.accountIds.map(
+                (accountId) => `arn:aws:iam::${accountId}:role/*`
+              ),
+            }),
+          ],
+        }),
+      },
     });
   }
 }
