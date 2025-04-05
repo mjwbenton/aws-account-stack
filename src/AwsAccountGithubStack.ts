@@ -57,7 +57,7 @@ export class AwsAccountGithubStack extends Stack {
           statements: [
             new PolicyStatement({
               effect: Effect.ALLOW,
-              actions: ["sts:AssumeRole"],
+              actions: ["sts:AssumeRole", "sts:TagSession"],
               resources: accountIds.map(
                 (accountId) => `arn:aws:iam::${accountId}:role/cdk-*`
               ),
@@ -80,7 +80,7 @@ export class AwsAccountGithubStack extends Stack {
           statements: [
             new PolicyStatement({
               effect: Effect.ALLOW,
-              actions: ["sts:AssumeRole"],
+              actions: ["sts:AssumeRole", "sts:TagSession"],
               resources: accountIds.map(
                 (accountId) => `arn:aws:iam::${accountId}:role/*`
               ),
