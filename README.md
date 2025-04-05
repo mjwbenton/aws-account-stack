@@ -1,6 +1,6 @@
 # aws-account-stack
 
-🪴 CDK stack to deploy global setup to my AWS account
+🪴 CDK stack to deploy global setup to my AWS accounts
 
 - Github actions auth
 - [Identity center](docs/identity-center-setup.md)
