@@ -18,11 +18,15 @@ const ADMIN_ROLE_NAME = "github-actions-admin";
 type AwsAccountGithubStackProps = StackProps & {
   // Account IDs to enable access to, by enabling AssumeRole access to
   // relevant roles in those accounts.
-  accountIds: string[];
+  assumeAccountIds?: string[];
 };
 
 export class AwsAccountGithubStack extends Stack {
-  constructor(scope: Construct, id: string, props: AwsAccountGithubStackProps) {
+  constructor(
+    scope: Construct,
+    id: string,
+    props?: AwsAccountGithubStackProps
+  ) {
     super(scope, id, props);
     const githubProvider = new OpenIdConnectProvider(
       this,
@@ -41,6 +45,8 @@ export class AwsAccountGithubStack extends Stack {
       },
     });
 
+    const accountIds = [this.account, ...(props?.assumeAccountIds ?? [])];
+
     new Role(this, "GitHubActionsRole", {
       roleName: CDK_ROLE_NAME,
       assumedBy: githubPrincipal,
@@ -52,7 +58,7 @@ export class AwsAccountGithubStack extends Stack {
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: ["sts:AssumeRole"],
-              resources: props.accountIds.map(
+              resources: accountIds.map(
                 (accountId) => `arn:aws:iam::${accountId}:role/cdk-*`
               ),
             }),
@@ -75,7 +81,7 @@ export class AwsAccountGithubStack extends Stack {
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: ["sts:AssumeRole"],
-              resources: props.accountIds.map(
+              resources: accountIds.map(
                 (accountId) => `arn:aws:iam::${accountId}:role/*`
               ),
             }),

@@ -18,12 +18,12 @@ const ALLIANCEBOOK_ACCOUNT_ENV = {
 const app = new App();
 
 // Management Account
-new AwsAccountGithubStack(app, "AwsAccountGithub", {
-  env: MANAGEMENT_ACCOUNT_ENV,
-  accountIds: [MANAGEMENT_ACCOUNT, ALLIANCEBOOK_ACCOUNT],
-});
 new AwsAccountIdentityCenterStack(app, "AwsAccountIdentityCenter", {
   env: MANAGEMENT_ACCOUNT_ENV,
+});
+new AwsAccountGithubStack(app, "AwsAccountGithub", {
+  env: MANAGEMENT_ACCOUNT_ENV,
+  assumeAccountIds: [ALLIANCEBOOK_ACCOUNT],
 });
 new AwsAccountRolesStack(app, "AwsAccountRoles", {
   env: MANAGEMENT_ACCOUNT_ENV,
@@ -34,12 +34,9 @@ new AwsAccountTerraformStack(app, "AwsAccountTerraform", {
 });
 
 // AllianceBook Account
-new AwsAccountGithubStack(app, `AwsAccountGithub-${ALLIANCEBOOK_ACCOUNT}`, {
-  env: ALLIANCEBOOK_ACCOUNT_ENV,
-  accountIds: [ALLIANCEBOOK_ACCOUNT],
-});
 new AwsAccountRolesStack(app, `AwsAccountRoles-${ALLIANCEBOOK_ACCOUNT}`, {
   env: ALLIANCEBOOK_ACCOUNT_ENV,
+  trustAccountIds: [MANAGEMENT_ACCOUNT],
 });
 new AwsAccountTerraformStack(
   app,
