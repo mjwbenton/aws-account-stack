@@ -22,7 +22,7 @@ export class AwsSSOStack extends Stack {
       accountRecovery: AccountRecovery.NONE,
     });
 
-    new UserPoolDomain(this, "Domain", {
+    const userPoolDomain = new UserPoolDomain(this, "Domain", {
       userPool,
       cognitoDomain: {
         domainPrefix: "mattb-sso",
@@ -51,12 +51,25 @@ export class AwsSSOStack extends Stack {
       }
     );
 
+    const userPoolDomainParam = new StringParameter(
+      this,
+      "UserPoolDomainParam",
+      {
+        parameterName: "/mattb-sso/user-pool-domain",
+        stringValue: `${userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com`,
+      }
+    );
+
     new CfnOutput(this, "UserPoolIdParamOutput", {
       value: userPoolIdParam.parameterArn,
     });
 
     new CfnOutput(this, "UserPoolClientIdParamOutput", {
       value: userPoolClientIdParam.parameterArn,
+    });
+
+    new CfnOutput(this, "UserPoolDomainParamOutput", {
+      value: userPoolDomainParam.parameterArn,
     });
   }
 }

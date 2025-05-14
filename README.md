@@ -4,6 +4,7 @@
 
 - Github actions auth
 - [Identity center](docs/identity-center-setup.md)
+- SSO setup for my apps
 
 ## How-to
 
