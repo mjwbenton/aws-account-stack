@@ -9,3 +9,4 @@
 ## How-to
 
 - [Setup a new account](docs/new-account.md)
+- [Add a user to SSO](docs/new-sso-user.md)
