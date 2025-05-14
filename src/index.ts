@@ -4,6 +4,7 @@ import { AwsAccountIdentityCenterStack } from "./AwsAccountIdentityCenterStack";
 import { AwsAccountRolesStack } from "./AwsAccountRolesStack";
 import { AwsAccountTerraformStack } from "./AwsAccountTerraformStack";
 import { ALLIANCEBOOK_ACCOUNT, MANAGEMENT_ACCOUNT } from "./accounts";
+import { AwsSSOStack } from "./AwsSSOStack";
 
 const MANAGEMENT_ACCOUNT_ENV = {
   account: MANAGEMENT_ACCOUNT,
@@ -31,6 +32,9 @@ new AwsAccountRolesStack(app, "AwsAccountRoles", {
 new AwsAccountTerraformStack(app, "AwsAccountTerraform", {
   env: MANAGEMENT_ACCOUNT_ENV,
   bucketName: "mattb.tech-terraform-state",
+});
+new AwsSSOStack(app, "AwsSSO", {
+  env: MANAGEMENT_ACCOUNT_ENV,
 });
 
 // AllianceBook Account
