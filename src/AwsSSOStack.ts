@@ -8,7 +8,10 @@ import {
 import { StringParameter } from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
 
-const CALLBACK_URLS = ["https://lonesome.mattb.tech"];
+const CALLBACK_URLS = [
+  "https://lonesome.mattb.tech",
+  "https://authtest.lonesome.mattb.tech",
+];
 
 export class AwsSSOStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
