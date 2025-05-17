@@ -36,6 +36,7 @@ new AwsAccountTerraformStack(app, "AwsAccountTerraform", {
 new AwsSSOStack(app, "AwsSSO", {
   env: MANAGEMENT_ACCOUNT_ENV,
   shareAccountIds: [ALLIANCEBOOK_ACCOUNT],
+  callbackUrls: ["https://lonesome.mattb.tech", "https://alliance.mattb.tech"],
 });
 
 // AllianceBook Account

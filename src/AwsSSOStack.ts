@@ -9,16 +9,11 @@ import { CfnResourceShare } from "aws-cdk-lib/aws-ram";
 import { ParameterTier, StringParameter } from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
 
-const CALLBACK_URLS = [
-  "https://lonesome.mattb.tech",
-  "https://alliance.mattb.tech",
-];
-
 export class AwsSSOStack extends Stack {
   constructor(
     scope: Construct,
     id: string,
-    props: StackProps & { shareAccountIds: string[] }
+    props: StackProps & { shareAccountIds: string[]; callbackUrls: string[] }
   ) {
     super(scope, id, props);
 
@@ -40,8 +35,8 @@ export class AwsSSOStack extends Stack {
     const userPoolClient = new UserPoolClient(this, "Client", {
       userPool,
       oAuth: {
-        callbackUrls: CALLBACK_URLS,
-        logoutUrls: CALLBACK_URLS,
+        callbackUrls: props.callbackUrls,
+        logoutUrls: props.callbackUrls,
       },
     });
 
