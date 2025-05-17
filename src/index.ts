@@ -35,6 +35,7 @@ new AwsAccountTerraformStack(app, "AwsAccountTerraform", {
 });
 new AwsSSOStack(app, "AwsSSO", {
   env: MANAGEMENT_ACCOUNT_ENV,
+  shareAccountIds: [ALLIANCEBOOK_ACCOUNT],
 });
 
 // AllianceBook Account
