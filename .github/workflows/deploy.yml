@@ -22,3 +22,6 @@ jobs:
       - run: yarn build
       - run: yarn lint
       - run: yarn deploy
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}

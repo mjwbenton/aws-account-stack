@@ -1,13 +1,17 @@
 import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import {
   AccountRecovery,
+  OAuthScope,
   UserPool,
   UserPoolClient,
+  UserPoolClientIdentityProvider,
   UserPoolDomain,
+  UserPoolIdentityProviderGoogle,
 } from "aws-cdk-lib/aws-cognito";
 import { CfnResourceShare } from "aws-cdk-lib/aws-ram";
 import { ParameterTier, StringParameter } from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
+import { env } from "./env";
 
 export class AwsSSOStack extends Stack {
   constructor(
@@ -25,6 +29,21 @@ export class AwsSSOStack extends Stack {
       accountRecovery: AccountRecovery.NONE,
     });
 
+    const googleProvider = new UserPoolIdentityProviderGoogle(this, "GoogleProvider", {
+      userPool,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      scopes: ["profile", "email", "openid"],
+      attributeMapping: {
+        email: {
+          attributeName: "email",
+        },
+        preferredUsername: {
+          attributeName: "name",
+        },
+      },
+    });
+
     const userPoolDomain = new UserPoolDomain(this, "Domain", {
       userPool,
       cognitoDomain: {
@@ -34,11 +53,18 @@ export class AwsSSOStack extends Stack {
 
     const userPoolClient = new UserPoolClient(this, "Client", {
       userPool,
+      supportedIdentityProviders: [
+        UserPoolClientIdentityProvider.GOOGLE,
+      ],
       oAuth: {
         callbackUrls: props.callbackUrls,
         logoutUrls: props.callbackUrls,
+        scopes: [OAuthScope.PROFILE, OAuthScope.EMAIL, OAuthScope.OPENID],
       },
     });
+
+    // Ensure the client depends on the Google provider
+    userPoolClient.node.addDependency(googleProvider);
 
     const userPoolIdParam = new StringParameter(this, "UserPoolIdParam", {
       parameterName: "/mattb-sso/user-pool-id",
