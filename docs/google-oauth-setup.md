@@ -4,7 +4,6 @@
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project "mattb-sso"
-3. Enable the Google+ API for your project
 
 ## 2. Configure OAuth Consent Screen
 
