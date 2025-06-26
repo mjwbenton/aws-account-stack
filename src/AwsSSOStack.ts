@@ -29,20 +29,24 @@ export class AwsSSOStack extends Stack {
       accountRecovery: AccountRecovery.NONE,
     });
 
-    const googleProvider = new UserPoolIdentityProviderGoogle(this, "GoogleProvider", {
-      userPool,
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-      scopes: ["profile", "email", "openid"],
-      attributeMapping: {
-        email: {
-          attributeName: "email",
+    const googleProvider = new UserPoolIdentityProviderGoogle(
+      this,
+      "GoogleProvider",
+      {
+        userPool,
+        clientId: env.GOOGLE_CLIENT_ID,
+        clientSecret: env.GOOGLE_CLIENT_SECRET,
+        scopes: ["profile", "email", "openid"],
+        attributeMapping: {
+          email: {
+            attributeName: "email",
+          },
+          preferredUsername: {
+            attributeName: "name",
+          },
         },
-        preferredUsername: {
-          attributeName: "name",
-        },
-      },
-    });
+      }
+    );
 
     const userPoolDomain = new UserPoolDomain(this, "Domain", {
       userPool,
@@ -53,9 +57,7 @@ export class AwsSSOStack extends Stack {
 
     const userPoolClient = new UserPoolClient(this, "Client", {
       userPool,
-      supportedIdentityProviders: [
-        UserPoolClientIdentityProvider.GOOGLE,
-      ],
+      supportedIdentityProviders: [UserPoolClientIdentityProvider.GOOGLE],
       oAuth: {
         callbackUrls: props.callbackUrls,
         logoutUrls: props.callbackUrls,

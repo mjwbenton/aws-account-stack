@@ -19,8 +19,8 @@ jobs:
           role-to-assume: arn:aws:iam::858777967843:role/github-actions-cdk
           aws-region: us-east-1
       - run: yarn install --frozen-lockfile
+      - run: yarn format:check
       - run: yarn build
-      - run: yarn lint
       - run: yarn deploy
         env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
