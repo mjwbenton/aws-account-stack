@@ -7,7 +7,9 @@ import {
   UserPoolClientIdentityProvider,
   UserPoolDomain,
   UserPoolIdentityProviderGoogle,
+  UserPoolOperation,
 } from "aws-cdk-lib/aws-cognito";
+import { Architecture, Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
 import { CfnResourceShare } from "aws-cdk-lib/aws-ram";
 import { ParameterTier, StringParameter } from "aws-cdk-lib/aws-ssm";
 import { Construct } from "constructs";
@@ -20,6 +22,30 @@ export class AwsSSOStack extends Stack {
     props: StackProps & { shareAccountIds: string[]; callbackUrls: string[] }
   ) {
     super(scope, id, props);
+
+    const preSignUpLambda = new Function(this, "PreSignUpLambda", {
+      runtime: Runtime.NODEJS_22_X,
+      architecture: Architecture.ARM_64,
+      handler: "index.handler",
+      code: Code.fromInline(`
+        exports.handler = async (event) => {
+          console.log('Pre-signup event:', JSON.stringify(event, null, 2));
+          const allowedEmails = process.env.SSO_ALLOWED_EMAILS.split(',').map(email => email.trim());
+          const userEmail = event.request.userAttributes.email;
+          if (!userEmail) {
+            throw new Error('Email address is required for signup');
+          }
+          if (!allowedEmails.includes(userEmail)) {
+            throw new Error(\`Email address \${userEmail} is not authorized to sign up\`);
+          }
+          console.log(\`Allowing signup for email: \${userEmail}\`);
+          return event;
+        };
+      `),
+      environment: {
+        SSO_ALLOWED_EMAILS: env.SSO_ALLOWED_EMAILS,
+      },
+    });
 
     const userPool = new UserPool(this, "Pool", {
       selfSignUpEnabled: false,
@@ -67,6 +93,9 @@ export class AwsSSOStack extends Stack {
 
     // Ensure the client depends on the Google provider
     userPoolClient.node.addDependency(googleProvider);
+
+    // Add pre-signup trigger to validate email addresses
+    userPool.addTrigger(UserPoolOperation.PRE_SIGN_UP, preSignUpLambda);
 
     const userPoolIdParam = new StringParameter(this, "UserPoolIdParam", {
       parameterName: "/mattb-sso/user-pool-id",
