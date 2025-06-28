@@ -25,3 +25,4 @@ jobs:
         env:
           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          SSO_ALLOWED_EMAILS: ${{ secrets.SSO_ALLOWED_EMAILS }}
