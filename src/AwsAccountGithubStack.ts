@@ -14,6 +14,7 @@ const GITHUB_USERNAME = "mjwbenton";
 
 const CDK_ROLE_NAME = "github-actions-cdk";
 const ADMIN_ROLE_NAME = "github-actions-admin";
+const SSM_READ_ROLE_NAME = "github-actions-ssm-read";
 
 type AwsAccountGithubStackProps = StackProps & {
   // Account IDs to enable access to, by enabling AssumeRole access to
@@ -61,6 +62,24 @@ export class AwsAccountGithubStack extends Stack {
               resources: accountIds.map(
                 (accountId) => `arn:aws:iam::${accountId}:role/cdk-*`
               ),
+            }),
+          ],
+        }),
+      },
+    });
+
+    new Role(this, "GitHubActionsSsmReadRole", {
+      roleName: SSM_READ_ROLE_NAME,
+      assumedBy: githubPrincipal,
+      maxSessionDuration: Duration.hours(1),
+      inlinePolicies: {
+        SsmReadPolicy: new PolicyDocument({
+          assignSids: true,
+          statements: [
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: ["ssm:GetParameter"],
+              resources: ["*"],
             }),
           ],
         }),
