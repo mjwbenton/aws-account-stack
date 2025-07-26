@@ -21,12 +21,32 @@ export class AwsAccountIdentityCenterStack extends Stack {
       }
     );
 
+    const readonlyPermissionsSet = new sso.CfnPermissionSet(
+      this,
+      "ReadonlyPermissionSet",
+      {
+        instanceArn: SSO_INSTANCE_ARN,
+        name: "Readonly",
+        description: "Readonly access",
+        sessionDuration: "PT1H",
+        managedPolicies: ["arn:aws:iam::aws:policy/ReadOnlyAccess"],
+      }
+    );
+
     ALL_ACCOUNTS.forEach((account) => {
       new sso.CfnAssignment(this, `AdminAssignment-${account}`, {
         instanceArn: SSO_INSTANCE_ARN,
         principalType: "USER",
         principalId: ADMIN_USER,
         permissionSetArn: adminPermissionsSet.attrPermissionSetArn,
+        targetType: "AWS_ACCOUNT",
+        targetId: account,
+      });
+      new sso.CfnAssignment(this, `ReadonlyAssignment-${account}`, {
+        instanceArn: SSO_INSTANCE_ARN,
+        principalType: "USER",
+        principalId: ADMIN_USER,
+        permissionSetArn: readonlyPermissionsSet.attrPermissionSetArn,
         targetType: "AWS_ACCOUNT",
         targetId: account,
       });
