@@ -63,6 +63,11 @@ export class AwsAccountGithubStack extends Stack {
                 (accountId) => `arn:aws:iam::${accountId}:role/cdk-*`
               ),
             }),
+            new PolicyStatement({
+              effect: Effect.ALLOW,
+              actions: ["cloudformation:DescribeStacks"],
+              resources: ["*"],
+            }),
           ],
         }),
       },
