@@ -3,7 +3,11 @@ import { AwsAccountGithubStack } from "./AwsAccountGithubStack";
 import { AwsAccountIdentityCenterStack } from "./AwsAccountIdentityCenterStack";
 import { AwsAccountRolesStack } from "./AwsAccountRolesStack";
 import { AwsAccountInfraStateStack } from "./AwsAccountInfraStateStack";
-import { ALLIANCEBOOK_ACCOUNT, FILMBUDDY_ACCOUNT, MANAGEMENT_ACCOUNT } from "./accounts";
+import {
+  ALLIANCEBOOK_ACCOUNT,
+  FILMBUDDY_ACCOUNT,
+  MANAGEMENT_ACCOUNT,
+} from "./accounts";
 import { AwsSSOStack } from "./AwsSSOStack";
 
 const MANAGEMENT_ACCOUNT_ENV = {
@@ -68,6 +72,6 @@ new AwsAccountInfraStateStack(
   `AwsAccountInfraState-${FILMBUDDY_ACCOUNT}`,
   {
     env: FILMBUDDY_ACCOUNT_ENV,
-    bucketName: "filmbuddy-infra-state",
+    bucketName: "filmbuddy.mattb.tech-infra-state",
   }
 );
