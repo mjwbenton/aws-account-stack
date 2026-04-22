@@ -2,15 +2,15 @@ import { Stack, StackProps } from "aws-cdk-lib";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 
-type AwsAccountInfraStateStackProps = StackProps & {
+type AwsAccountTerraformStackProps = StackProps & {
   bucketName: string;
 };
 
-export class AwsAccountInfraStateStack extends Stack {
+export class AwsAccountTerraformStack extends Stack {
   constructor(
     scope: Construct,
     id: string,
-    props: AwsAccountInfraStateStackProps
+    props: AwsAccountTerraformStackProps
   ) {
     super(scope, id, props);
 
