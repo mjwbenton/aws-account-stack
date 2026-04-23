@@ -15,7 +15,7 @@ region = us-east-1
 - Run CDK bootstrap, trusting the management account
 
 ```
-$> AWS_PROFILE=${accountName}-admin npx cdk bootstrap aws://${accountId}/us-east-1 --trust 858777967843 --trust-for-lookup 858777967843 --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess
+$> AWS_PROFILE=${accountName}-admin npx cdk bootstrap aws://${accountId}/us-east-1 --trust 858777967843 --trust-for-lookup 858777967843 --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess --no-deny-external-id
 ```
 
 - Add the new account ID to the list of those the github actions role can manage. This is what will enable future deployment of stacks to the new account to work in Github actions. Push.
