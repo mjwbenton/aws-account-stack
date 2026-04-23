@@ -63,7 +63,7 @@ new AwsAccountInfraStateStack(
 );
 
 // FilmBuddy Account
-new AwsAccountRolesStack(app, `AwsAccountRoles-${FILMBUDDY_ACCOUNT}`, {
+/* new AwsAccountRolesStack(app, `AwsAccountRoles-${FILMBUDDY_ACCOUNT}`, {
   env: FILMBUDDY_ACCOUNT_ENV,
   trustAccountIds: [MANAGEMENT_ACCOUNT],
 });
@@ -74,4 +74,4 @@ new AwsAccountInfraStateStack(
     env: FILMBUDDY_ACCOUNT_ENV,
     bucketName: "filmbuddy.mattb.tech-infra-state",
   }
-);
+);*/
