@@ -44,7 +44,7 @@ new AwsAccountInfraStateStack(app, "AwsAccountTerraform", {
 });
 new AwsSSOStack(app, "AwsSSO", {
   env: MANAGEMENT_ACCOUNT_ENV,
-  shareAccountIds: [ALLIANCEBOOK_ACCOUNT, FILMBUDDY_ACCOUNT],
+  shareAccountIds: [ALLIANCEBOOK_ACCOUNT],
   callbackUrls: ["https://lonesome.mattb.tech", "https://alliance.mattb.tech"],
 });
 
@@ -73,5 +73,6 @@ new AwsAccountInfraStateStack(
   {
     env: FILMBUDDY_ACCOUNT_ENV,
     bucketName: "filmbuddy.mattb.tech-infra-state",
+    trustAccountIds: [MANAGEMENT_ACCOUNT],
   }
 );
