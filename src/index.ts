@@ -26,6 +26,11 @@ const FILMBUDDY_ACCOUNT_ENV = {
   region: "us-east-1",
 };
 
+const BACKUP_ACCOUNT_ENV = {
+  account: BACKUP_ACCOUNT,
+  region: "us-east-1",
+};
+
 const app = new App();
 
 // Management Account
@@ -77,3 +82,8 @@ new AwsAccountInfraStateStack(
     trustAccountIds: [MANAGEMENT_ACCOUNT],
   }
 );
+
+// Backup Account
+new AwsAccountGithubStack(app, `AwsAccountGithub-${BACKUP_ACCOUNT}`, {
+  env: BACKUP_ACCOUNT_ENV,
+});
