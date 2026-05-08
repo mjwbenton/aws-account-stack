@@ -5,6 +5,7 @@ import { AwsAccountRolesStack } from "./AwsAccountRolesStack";
 import { AwsAccountInfraStateStack } from "./AwsAccountInfraStateStack";
 import {
   ALLIANCEBOOK_ACCOUNT,
+  BACKUP_ACCOUNT,
   FILMBUDDY_ACCOUNT,
   MANAGEMENT_ACCOUNT,
 } from "./accounts";
@@ -33,7 +34,7 @@ new AwsAccountIdentityCenterStack(app, "AwsAccountIdentityCenter", {
 });
 new AwsAccountGithubStack(app, "AwsAccountGithub", {
   env: MANAGEMENT_ACCOUNT_ENV,
-  assumeAccountIds: [ALLIANCEBOOK_ACCOUNT, FILMBUDDY_ACCOUNT],
+  assumeAccountIds: [ALLIANCEBOOK_ACCOUNT, FILMBUDDY_ACCOUNT, BACKUP_ACCOUNT],
 });
 new AwsAccountRolesStack(app, "AwsAccountRoles", {
   env: MANAGEMENT_ACCOUNT_ENV,
