@@ -32,6 +32,11 @@ const BACKUP_ACCOUNT_ENV = {
   region: "us-east-1",
 };
 
+const WHENLAST_ACCOUNT_ENV = {
+  account: WHENLAST_ACCOUNT,
+  region: "us-east-1",
+};
+
 const app = new App();
 
 // Management Account
@@ -92,4 +97,15 @@ new AwsAccountInfraStateStack(
 // Backup Account
 new AwsAccountGithubStack(app, `AwsAccountGithub-${BACKUP_ACCOUNT}`, {
   env: BACKUP_ACCOUNT_ENV,
+});
+
+// WhenLast Account
+new AwsAccountRolesStack(app, `AwsAccountRoles-${WHENLAST_ACCOUNT}`, {
+  env: WHENLAST_ACCOUNT_ENV,
+  trustAccountIds: [MANAGEMENT_ACCOUNT],
+});
+new AwsAccountInfraStateStack(app, `AwsAccountInfraState-${WHENLAST_ACCOUNT}`, {
+  env: WHENLAST_ACCOUNT_ENV,
+  bucketName: "whenlast.mattb.tech-infra-state",
+  trustAccountIds: [MANAGEMENT_ACCOUNT],
 });
