@@ -8,6 +8,7 @@ import {
   BACKUP_ACCOUNT,
   FILMBUDDY_ACCOUNT,
   MANAGEMENT_ACCOUNT,
+  WHENLAST_ACCOUNT,
 } from "./accounts";
 import { AwsSSOStack } from "./AwsSSOStack";
 
@@ -39,7 +40,12 @@ new AwsAccountIdentityCenterStack(app, "AwsAccountIdentityCenter", {
 });
 new AwsAccountGithubStack(app, "AwsAccountGithub", {
   env: MANAGEMENT_ACCOUNT_ENV,
-  assumeAccountIds: [ALLIANCEBOOK_ACCOUNT, FILMBUDDY_ACCOUNT, BACKUP_ACCOUNT],
+  assumeAccountIds: [
+    ALLIANCEBOOK_ACCOUNT,
+    FILMBUDDY_ACCOUNT,
+    BACKUP_ACCOUNT,
+    WHENLAST_ACCOUNT,
+  ],
 });
 new AwsAccountRolesStack(app, "AwsAccountRoles", {
   env: MANAGEMENT_ACCOUNT_ENV,
