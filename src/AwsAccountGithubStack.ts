@@ -11,6 +11,7 @@ import {
 import { Construct } from "constructs";
 
 const GITHUB_USERNAME = "mjwbenton";
+const GITHUB_USER_ID = "107642";
 
 const CDK_ROLE_NAME = "github-actions-cdk";
 const ADMIN_ROLE_NAME = "github-actions-admin";
@@ -42,7 +43,10 @@ export class AwsAccountGithubStack extends Stack {
       githubProvider
     ).withConditions({
       StringLike: {
-        "token.actions.githubusercontent.com:sub": `repo:${GITHUB_USERNAME}/*:*`,
+        "token.actions.githubusercontent.com:sub": [
+          `repo:${GITHUB_USERNAME}/*:*`,
+          `repo:${GITHUB_USERNAME}@${GITHUB_USER_ID}/*:*`,
+        ],
       },
     });
 
