@@ -10,6 +10,7 @@ import {
   MANAGEMENT_ACCOUNT,
   WHENLAST_ACCOUNT,
 } from "./accounts";
+import { AwsAccountBudgetStack } from "./AwsAccountBudgetStack";
 import { AwsSSOStack } from "./AwsSSOStack";
 
 const MANAGEMENT_ACCOUNT_ENV = {
@@ -64,6 +65,10 @@ new AwsSSOStack(app, "AwsSSO", {
   shareAccountIds: [ALLIANCEBOOK_ACCOUNT],
   callbackUrls: ["https://lonesome.mattb.tech", "https://alliance.mattb.tech"],
 });
+new AwsAccountBudgetStack(app, `AwsAccountBudget-${MANAGEMENT_ACCOUNT}`, {
+  env: MANAGEMENT_ACCOUNT_ENV,
+  monthlyBudgetUsd: 10,
+});
 
 // AllianceBook Account
 new AwsAccountRolesStack(app, `AwsAccountRoles-${ALLIANCEBOOK_ACCOUNT}`, {
@@ -78,6 +83,10 @@ new AwsAccountInfraStateStack(
     bucketName: "alliancebook.mattb.tech-terraform-state",
   }
 );
+new AwsAccountBudgetStack(app, `AwsAccountBudget-${ALLIANCEBOOK_ACCOUNT}`, {
+  env: ALLIANCEBOOK_ACCOUNT_ENV,
+  monthlyBudgetUsd: 10,
+});
 
 // FilmBuddy Account
 new AwsAccountRolesStack(app, `AwsAccountRoles-${FILMBUDDY_ACCOUNT}`, {
@@ -93,10 +102,18 @@ new AwsAccountInfraStateStack(
     trustAccountIds: [MANAGEMENT_ACCOUNT],
   }
 );
+new AwsAccountBudgetStack(app, `AwsAccountBudget-${FILMBUDDY_ACCOUNT}`, {
+  env: FILMBUDDY_ACCOUNT_ENV,
+  monthlyBudgetUsd: 10,
+});
 
 // Backup Account
 new AwsAccountGithubStack(app, `AwsAccountGithub-${BACKUP_ACCOUNT}`, {
   env: BACKUP_ACCOUNT_ENV,
+});
+new AwsAccountBudgetStack(app, `AwsAccountBudget-${BACKUP_ACCOUNT}`, {
+  env: BACKUP_ACCOUNT_ENV,
+  monthlyBudgetUsd: 10,
 });
 
 // WhenLast Account
@@ -108,4 +125,8 @@ new AwsAccountInfraStateStack(app, `AwsAccountInfraState-${WHENLAST_ACCOUNT}`, {
   env: WHENLAST_ACCOUNT_ENV,
   bucketName: "whenlast.mattb.tech-infra-state",
   trustAccountIds: [MANAGEMENT_ACCOUNT],
+});
+new AwsAccountBudgetStack(app, `AwsAccountBudget-${WHENLAST_ACCOUNT}`, {
+  env: WHENLAST_ACCOUNT_ENV,
+  monthlyBudgetUsd: 10,
 });

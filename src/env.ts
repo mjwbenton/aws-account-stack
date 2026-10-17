@@ -10,4 +10,7 @@ export const env = cleanEnv(process.env, {
   SSO_ALLOWED_EMAILS: str({
     desc: "Comma-separated list of email addresses allowed to sign up via SSO",
   }),
+  BUDGET_ALERT_EMAIL: str({
+    desc: "Email address that AWS Budgets notifications are sent to",
+  }),
 });
