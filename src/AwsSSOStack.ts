@@ -84,6 +84,8 @@ export class AwsSSOStack extends Stack {
     const userPoolClient = new UserPoolClient(this, "Client", {
       userPool,
       supportedIdentityProviders: [UserPoolClientIdentityProvider.GOOGLE],
+      idTokenValidity: Duration.days(1),
+      refreshTokenValidity: Duration.days(365),
       oAuth: {
         callbackUrls: props.callbackUrls,
         logoutUrls: props.callbackUrls,
